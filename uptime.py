@@ -21,7 +21,7 @@ class StatusChange:
 #                         #
 #   FIRST IMPLEMENTATION  #
 #                         #   
-
+#
 # def calculate_uptime(current_status: Status, status_changes: List[StatusChange], since: datetime) -> float:
 #     # You can do the following assumptions about data:
 #     # - statuses alternate correctly; you won't have two UPs or DOWNs in sequence
@@ -126,17 +126,16 @@ def calculate_uptime(current_status: Status, status_changes: List[StatusChange],
 #|------------------------| represents the 24 hours time interval betwen SINCE and now
 # each dash represents one hour, U and D are the status changes 
 
+# 24 h interval 
 SINCE = datetime.now() - timedelta(hours=24)
-# 25% uptime |------------------U------|  6 hours up ---> 25% uptime
+# test 1  |------------------U------|  6 hours up ---> 25% uptime
 EVENT_UP = datetime.now() - timedelta(hours=6)
 test_list=[StatusChange(new_status='UP', timestamp=EVENT_UP)]
-# 75% uptime |------------------D------|  18 hours up ---> 75% uptime 
+# test 2  |------------------D------|  18 hours up ---> 75% uptime 
 test_list2=[StatusChange(new_status='DOWN', timestamp=EVENT_UP)]
-# 50% uptime |------D------------U------|
+# test 3  |------D------------U------| 12 hours up ---> 50% uptime
 EVENT_DOWN= datetime.now() - timedelta(hours=18)
 test_list3=[StatusChange(new_status='DOWN', timestamp=EVENT_DOWN), StatusChange(new_status='UP', timestamp=EVENT_UP)]
-# print(EVENT_UP, EVENT_DOWN)
-
 ###test 4 |-D---U------------------D--|  19 hours up ---> 79.17% uptime
 ED1=datetime.now() - timedelta(hours=23)
 EU1=datetime.now() - timedelta(hours=20)
@@ -189,4 +188,3 @@ if __name__ == "__main__":
     assert calculate_uptime('DOWN', test_list6, SINCE) == 91.67, calculate_uptime('DOWN', test_list6, SINCE)
     assert calculate_uptime('UP', test_list7, SINCE) == 41.67, calculate_uptime('UP', test_list7, SINCE)
 
-    # calculate_uptime('DOWN', test_list7, SINCE)
